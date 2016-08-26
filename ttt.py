@@ -27,19 +27,17 @@ def findByYear():
         URL=Url_Prefix+"tab="+Url_Tab+"&wl="+Url_Wl+"&local="+str(Url_Local)+"&batch="+Url_Batch+"&syear="+str(Url_Year)
         raw_data=urllib.request.urlopen(URL).read()
         raw_data=raw_data.decode('UTF-8')
-        print(raw_data)
         raw_pattern='<tr class="tbl2tbody">(.+?)</tr>'
         raw_result=re.findall(raw_pattern, raw_data,re.S)
         raw_result=str(raw_result)
         fur_pattern='<td>(.+?)</td>'
         fur_result=re.findall(fur_pattern,raw_result)
-        print(fur_result)
-        Temp_Saver=""
+        Temp_Saver="" #用作分隔符方便正则提取
         for i in range(len(fur_result)):
             if (i+1)%6==0 and i!=0:
-                Temp_Saver+="\n"
+                Temp_Saver+="&\n"
             else:
-                Temp_Saver=Temp_Saver+fur_result[i]
+                Temp_Saver=Temp_Saver+"&"+fur_result[i]
         print(Temp_Saver)
         file_name=str(Url_Local)+"&&"+str(Url_Year)+".txt"
         save_in_txt=open(file_name,"w")
