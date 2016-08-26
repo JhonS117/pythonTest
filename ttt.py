@@ -12,7 +12,7 @@ year-- 0:不限   2008~2016
 """
 Url_Tab="batch"
 Url_Wl=""
-Url_Local=11
+# Url_Local=11
 Url_Batch=""
 Url_Year=2008
 Url_Prefix="http://kaoshi.edu.sina.com.cn/college/scorelist?"
@@ -20,11 +20,18 @@ Url_Prefix="http://kaoshi.edu.sina.com.cn/college/scorelist?"
 Dict_Province={}
 Temp_Saver=""
 
-def findByYear():
-    global Url_Tab,Url_Wl,Url_Local,Url_Batch,Url_Year,Url_Prefix,Temp_Saver
+def findByProvince():
+    location=1;
+    while(location<33):
+        findByYear(location)
+        location+=1
+        
+        
+def findByYear(location):
+    global Url_Tab,Url_Wl,Url_Batch,Url_Year,Url_Prefix,Temp_Saver
     Url_Year=2008
     while(Url_Year<=2016):
-        URL=Url_Prefix+"tab="+Url_Tab+"&wl="+Url_Wl+"&local="+str(Url_Local)+"&batch="+Url_Batch+"&syear="+str(Url_Year)
+        URL=Url_Prefix+"tab="+Url_Tab+"&wl="+Url_Wl+"&local="+str(location)+"&batch="+Url_Batch+"&syear="+str(Url_Year)
         raw_data=urllib.request.urlopen(URL).read()
         raw_data=raw_data.decode('UTF-8')
         raw_pattern='<tr class="tbl2tbody">(.+?)</tr>'
@@ -39,7 +46,7 @@ def findByYear():
             else:
                 Temp_Saver=Temp_Saver+"&"+fur_result[i]
         print(Temp_Saver)
-        file_name=str(Url_Local)+"&&"+str(Url_Year)+".txt"
+        file_name="province/"+str(location)+"&&"+str(Url_Year)+".txt"
         save_in_txt=open(file_name,"w")
         save_in_txt.write(Temp_Saver)
         save_in_txt.close()
@@ -47,6 +54,6 @@ def findByYear():
 
     
 if __name__=="__main__":
-    findByYear()
+    findByProvince()
     print("HelloWorld")
 
